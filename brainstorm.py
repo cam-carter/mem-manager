@@ -17,6 +17,14 @@ for i in range(number_of_jobs):
         page_counter += 1 # iterates page_counter
 
 # create jobs from file
+i = 0
 for i in range(number_of_jobs):
     jobs[i] = Job()
     jobs[i].create('input/inputfilewhatever.text')
+    i += 1
+
+i = 0
+for i in range(number_of_jobs):
+    jobs[i].request = input('Enter the request for job ' + repr(i + 1))
+    jobs[i].job_number = input('Enter the number for job ' + repr(i + 1))
+
