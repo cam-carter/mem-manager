@@ -47,9 +47,11 @@ for i in range(1, number_of_jobs):
     print('Physical address: ' + repr(jobs[i].memory_requested))
     if jobs[i].logical_address:
         for j in range(len(jobs[i].logical_address)):
+            if jobs[i].logical_address[j] > jobs[i].memory_requested:
+                print('Logical Address: ERROR')
+                print('Page referenced: ERROR')
+                continue
             print('Logical address: ' + repr(jobs[i].logical_address[j]))
             print('Page referenced: ' + repr(math.ceil(jobs[i].logical_address[j] / 512)))
     print('Pages occupied: ' + repr(jobs[i].pages_occupied))
     print('Frame number: ' + repr(jobs[i].frame_number) + '\n')
-    
-
