@@ -5,3 +5,5 @@ class job():
         self.logical_address = []
         self.pages_occupied = 0
         self.frame_number = 0
+        self.hasDealloc = False
+        self.deallocTime = 999
