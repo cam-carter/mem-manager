@@ -39,23 +39,21 @@ frame_counter = 0
 page_size = 512
 
 for i in range(0, number_of_jobs):
-    for k in range (0, number_of_jobs):
-        print ("k = %d" %(k))
+    counter = 0
+    for k in range (0, number_of_jobs): #checks for deallocs in each job at every step
         if jobs[k].hasDealloc == True:
-            print ("%d" % jobs[k].deallocTime)
-            print ("i %d" % i)
-            if i == jobs[k].deallocTime:
-                jobs[k].hasDealloc = False
-                print (repr(jobs[k].hasDealloc))
-                for n in range(0, 15):
+            if i == jobs[k].deallocTime: #if it's time to deallocate
+                jobs[k].hasDealloc = False #set to false
+                for n in range(0, 15): #replace all the frames with 0
                     if frame[n] == k+1:
                         frame[n] = 0
     for j in range(0, 15):
-        if frame[j] == 0 and j < jobs[i].pages_occupied:
-            print("doing something")
-            frame[j] = i+1
-    for x in range(0, 15):
-        print('frame %d job %d' %(x, frame[x]))
+        if frame[j] == 0:
+            if counter < jobs[i].pages_occupied:
+                frame[j] = i+1
+                counter += 1
+for x in range(0, 15):
+    print('frame %d job %d' %(x, frame[x]))
 
 
 #i = 0
