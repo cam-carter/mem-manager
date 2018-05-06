@@ -51,49 +51,44 @@ for i in range(0, number_of_jobs):
                 frame[j] = i+1
                 counter += 1
 
-for n in range (len(frame)): # trims the excess list, I could use appends
-    if frame[n] == 0:        # but for the sake of this project, keep it simple
-        del frame[n:]
+for i in range (len(frame)): # trims the excess list, I could use appends
+    if frame[i] == 0:        # but for the sake of this project, keep it simple
+        del frame[i:]
         break
 
-for x in range(len(frame)): # print out the frame
-    print('| %d ' % frame[x], end="")
+for i in range(len(frame)): # print out the frame
+    print('| %d ' % frame[i], end="")
 print ('|')
 
 frame_byte = 0 # the byte of the frame
 inner_frame_byte = 0 # the frame bytes from the start of the pages
 page_counter = 0 # the counter of pages
 
-for r in range (1, number_of_jobs):
+for i in range (0, number_of_jobs):
     #initialize variables
     frame_byte = 0
     inner_frame_byte = 0
     page_counter = 0
     #for each logical address
-    for u in range(len(jobs[r].logical_address)):
+    for j in range(len(jobs[i].logical_address)):
         #reset these for each logical address because we are going to search
         #the entire array every time
         frame_byte = 0
         inner_frame_byte = 0
         page_counter = 0
-        for w in range(len(frame)):
+        for k in range(len(frame)):
             #if we find the job number...
-            if frame[w] == r + 1:
+            if frame[k] == i + 1:
                 #if the inner byte is less than the logical address and
                 #it's less than the next frame, then append the frame number,
                 #the page, and the physical address, ()(frame - page) * 512 ) + logical
-                if (inner_frame_byte < jobs[r].logical_address[u] and
-                (inner_frame_byte+512) > jobs[r].logical_address[u]):
-                    jobs[r].frame_number.append(w)
-                    jobs[r].page_number.append(page_counter)
-                    jobs[r].physical_address.append(((w - page_counter) * 512) +
-                    (jobs[r].logical_address[u]))
+                if (inner_frame_byte <= jobs[i].logical_address[j] and
+                (inner_frame_byte+512) > jobs[i].logical_address[j]):
+                    jobs[i].frame_number.append(k)
+                    jobs[i].page_number.append(page_counter)
+                    jobs[i].physical_address.append(((k - page_counter) * 512) +
+                    (jobs[i].logical_address[j]))
                     break # break so we stop searching for this logical address
-                elif jobs[r].logical_address[u] == 0:
-                    jobs[r].frame_number.append(w)
-                    jobs[r].page_number.append(page_counter)
-                    jobs[r].physical_address.append(frame_byte)
-                    break #break if the logical address is 0 since it's the first one
                 else:
                     #we're still inside the file, so keep going
                     inner_frame_byte += 512 # increase the inner frame byte
@@ -102,12 +97,12 @@ for r in range (1, number_of_jobs):
 
 #if we found there was an error (out of bounds memory location address)
 #display that!
-for l in range (1, number_of_jobs):
-    for d in range (len(jobs[l].logical_address)):
-        if jobs[l].pages_occupied * 512 < jobs[l].logical_address[d]:
-            jobs[l].frame_number.append('ERROR')
-            jobs[l].page_number.append('ERROR')
-            jobs[l].physical_address.append('ERROR')
+for i in range (0, number_of_jobs):
+    for j in range (len(jobs[i].logical_address)):
+        if jobs[i].pages_occupied * 512 < jobs[i].logical_address[j]:
+            jobs[i].frame_number.append('ERROR')
+            jobs[i].page_number.append('ERROR')
+            jobs[i].physical_address.append('ERROR')
 
 for i in range(0, number_of_jobs):
     print('Job ' + repr(jobs[i].job_number) + ':')
